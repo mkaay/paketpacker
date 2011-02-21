@@ -57,6 +57,15 @@ public class Paket implements Comparable<Paket> {
 		return gewicht;
 	}
 	
+	public void optimieren() {
+		int b = getBreite();
+		int t = getTiefe();
+		if (b < t) {
+			this.tiefe = b;
+			this.breite = t;
+		}
+	}
+	
 	@Override
     public int compareTo(Paket o)
     {
@@ -64,8 +73,7 @@ public class Paket implements Comparable<Paket> {
         {
             throw new IllegalArgumentException();
         }
-
-        return x - o.x;
+        return o.getBreite() - this.getBreite();
     }
 
     @Override
@@ -78,9 +86,21 @@ public class Paket implements Comparable<Paket> {
 
         if (obj instanceof Paket)
         {
-            return x == ((Paket) obj).x;
+            return this.getBreite() == ((Paket) obj).getBreite();
         }
 
         return false;
     }
+    
+    protected Paket(Paket original) {
+    	breite = original.breite;
+		tiefe = original.tiefe;
+		hoehe = original.hoehe;
+		gewicht = original.gewicht;
+    }
+
+    public Paket copy() {
+        return new Paket(this);
+    }
+
 }

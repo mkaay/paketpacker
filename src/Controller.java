@@ -1,41 +1,58 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Controller {
 	public static void main(String[] args) {
-		Container c = new Container(100, 100, 800, 4000, 5);
-		
-		Paket paket1 = new Paket(5, 10, 10, 5);
-		Paket paket2 = new Paket(15, 10, 10, 5);
-		Paket paket3 = new Paket(10, 10, 10, 5);
-		Paket paket4 = new Paket(10, 5, 5, 5);
-		
-		paket1.positionieren(0, 0, 0);
-		paket2.positionieren(11, 0, 0);
-		paket3.positionieren(0, 11, 0);
-		paket4.positionieren(0, 11, 0);
-		
-		c.einladen(paket1);
-		c.einladen(paket2);
-		c.einladen(paket3);
-		c.einladen(paket4);
-		
+		Controller c = new Controller();
 		ArrayList<Paket> pakete = new ArrayList<Paket>();
-		pakete.add(paket1);
-		pakete.add(paket2);
-		pakete.add(paket3);
-		pakete.add(paket4);
-		Collections.sort(pakete);
-		//for (Paket p: pakete) {
-		//	System.out.println(p.getBreite());
-		//}
+		Object[] standard = c.standardPakete();
 		
-		Turm t = new Turm(25);
-		t.turmBauen(pakete);
-		t.anzeigen();
+		Random r = new Random();
+		for (int i = 0; i < 200; i++) {
+			Paket paket = ((Paket) standard[r.nextInt(standard.length-1)]).copy();
+			paket.optimieren();
+			pakete.add(paket);
+		}
+		
+		Collections.sort(pakete);
+		
+		ArrayList<Turm> tuerme = new ArrayList<Turm>(); 
+		for (int i = 0; i < 20; i++) {
+			Turm t = new Turm(2393); //Standard Container
+			t.turmBauen(pakete);
+			System.out.print("Turm ");
+			System.out.print(t.aktuelleHoehe());
+			System.out.print(" ");
+			int frei = t.freierPlatz();
+			int max = t.maximalesVolumen();
+			System.out.print(((float) frei) / ((float) max) * 100);
+			System.out.print("% frei");
+			System.out.println();
+			t.anzeigen();
+			tuerme.add(t);
+		}
 	}
 	
-	public ArrayList<Paket> sortiere(ArrayList<Paket> pakete) {
-		return null;
+	public Object[] standardPakete() {
+		ArrayList<Paket> standardPakete = new ArrayList<Paket>();
+		standardPakete.add(new Paket(300, 440, 145, 10));
+		standardPakete.add(new Paket(370, 440, 145, 10));
+		standardPakete.add(new Paket(260, 330, 385, 10));
+		standardPakete.add(new Paket(260, 440, 385, 10));
+		standardPakete.add(new Paket(260, 550, 385, 10));
+		standardPakete.add(new Paket(300, 165, 385, 10));
+		standardPakete.add(new Paket(300, 220, 385, 10));
+		standardPakete.add(new Paket(300, 330, 385, 10));
+		standardPakete.add(new Paket(300, 440, 385, 10));
+		standardPakete.add(new Paket(300, 550, 385, 10));
+		standardPakete.add(new Paket(370, 165, 270, 10));
+		standardPakete.add(new Paket(370, 220, 270, 10));
+		standardPakete.add(new Paket(370, 330, 270, 10));
+		standardPakete.add(new Paket(370, 440, 270, 10));
+		standardPakete.add(new Paket(370, 550, 270, 10));
+		standardPakete.add(new Paket(520, 660, 385, 10));
+		standardPakete.add(new Paket(335, 440, 140, 10));
+		return standardPakete.toArray();
 	}
 }
